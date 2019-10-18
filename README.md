@@ -2,14 +2,13 @@
 
 ## Dependencies
 
-|groupId|artifactId|version|
-|--|--|--|
-|org.springframework.boot|spring-boot-starter-parent|2.1.1.RELEASE|
-|org.springframework.boot|spring-boot-starter-web|--|
-|org.springframework.boot|spring-boot-starter-security|--|
-|io.jsonwebtoken|jjwt|0.9.1|
-
+ * Spring boot 2.1.9
+ * jjwt 0.9.1
+ * JUnit 5
+ * Lombok
 
 ## Fonts
  - https://medium.com/swlh/spring-boot-security-jwt-hello-world-example-b479e457664c
+ - https://github.com/jwtk/jjwt
  - https://www.javainuse.com/spring/boot-jwt-mysql
+

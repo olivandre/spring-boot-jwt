@@ -1,6 +1,7 @@
 package com.javainuse.config;
 
 import java.io.Serializable;
+//import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+//import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -67,12 +69,16 @@ public class JwtTokenUtil implements Serializable {
      *    compaction of the JWT to a URL-safe string 
      */
     private String doGenerateToken(Map<String, Object> claims, String subject) {
+
+		//Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+		System.out.println("AAAAAAAAAAAA\n\n" + this.secret);
 		return Jwts.builder()
 				   .setClaims(claims)
 				   .setSubject(subject)
 				   .setIssuedAt(new Date(System.currentTimeMillis()))
 				   .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
 				   .signWith(SignatureAlgorithm.HS512, secret)
+				   //.signWith(key)
 				   .compact();
     }
     
