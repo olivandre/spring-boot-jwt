@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -22,7 +24,9 @@ public class JwtTokenUtil implements Serializable {
 	/**
      *
      */
-    private static final long serialVersionUID = 6927418153515369985L;
+	private static final long serialVersionUID = 6927418153515369985L;
+	
+	private static Logger logger = LogManager.getLogger(JwtTokenUtil.class);
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
@@ -70,8 +74,9 @@ public class JwtTokenUtil implements Serializable {
      */
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
+		logger.debug("this.secret: {}", this.secret);
+
 		//Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-		System.out.println("AAAAAAAAAAAA\n\n" + this.secret);
 		return Jwts.builder()
 				   .setClaims(claims)
 				   .setSubject(subject)

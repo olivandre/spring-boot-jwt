@@ -5,6 +5,8 @@ import com.javainuse.model.JwtRequest;
 import com.javainuse.model.JwtResponse;
 import com.javainuse.service.JwtUserDetailsService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
-
+	
+	private static Logger logger = LogManager.getLogger(JwtAuthenticationController.class);
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	@Autowired
@@ -42,8 +46,10 @@ public class JwtAuthenticationController {
 		try {
 			this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
+			logger.error(e.getMessage(), e);
 			throw new Exception("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
+			logger.error(e.getMessage(), e);
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
