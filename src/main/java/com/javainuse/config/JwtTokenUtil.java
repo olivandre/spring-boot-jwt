@@ -1,6 +1,7 @@
 package com.javainuse.config;
 
 import java.io.Serializable;
+import java.security.Key;
 //import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 //import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -76,14 +79,16 @@ public class JwtTokenUtil implements Serializable {
 
 		logger.debug("this.secret: {}", this.secret);
 
+		byte[] keyBytes = Decoders.BASE64.decode(secret);
+      	Key key = Keys.hmacShaKeyFor(keyBytes);
+
 		//Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 		return Jwts.builder()
 				   .setClaims(claims)
 				   .setSubject(subject)
 				   .setIssuedAt(new Date(System.currentTimeMillis()))
 				   .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				   .signWith(SignatureAlgorithm.HS512, secret)
-				   //.signWith(key)
+				   .signWith(key, SignatureAlgorithm.HS512)
 				   .compact();
     }
     
