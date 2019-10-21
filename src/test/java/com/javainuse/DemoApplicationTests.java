@@ -58,12 +58,10 @@ public class DemoApplicationTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(token);
 
-        HttpEntity<?> entity = new HttpEntity<>(null, headers);
-
         ResponseEntity<String> response = restTemplate.exchange(
             this.createURLWithPort("/hello"), 
             HttpMethod.GET, 
-            entity, 
+            new HttpEntity<>(null, headers), 
             String.class
         );
 
@@ -82,14 +80,12 @@ public class DemoApplicationTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<JwtRequest> entity = new HttpEntity<JwtRequest>(jwtRequest, headers);
-
         logger.info("url: {}", this.createURLWithPort("/authenticate"));
 
         ResponseEntity<JwtResponse> response = restTemplate.exchange(
             this.createURLWithPort("/authenticate"), 
             HttpMethod.POST, 
-            entity, 
+            new HttpEntity<JwtRequest>(jwtRequest, headers), 
             JwtResponse.class
         );
 
