@@ -25,35 +25,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
-	
-	private static Logger logger = LogManager.getLogger(JwtAuthenticationController.class);
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-	@Autowired
-	private JwtUserDetailsService userDetailsService;
     
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-		this.authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		JwtResponse jwtResponse = JwtResponse.builder()
-											 .jwtToken(this.jwtTokenUtil.generateToken(userDetails))
-											 .build();
-		return new ResponseEntity<JwtResponse>(jwtResponse, HttpStatus.OK);
+    private static Logger logger = LogManager.getLogger(JwtAuthenticationController.class);
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
+    
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        this.authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        JwtResponse jwtResponse = JwtResponse.builder()
+                                             .jwtToken(this.jwtTokenUtil.generateToken(userDetails))
+                                             .build();
+        return new ResponseEntity<JwtResponse>(jwtResponse, HttpStatus.OK);
     }
     
-	private void authenticate(String username, String password) throws Exception {
-		try {
-			this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			logger.error(e.getMessage(), e);
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			logger.error(e.getMessage(), e);
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}
-	}
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            logger.error(e.getMessage(), e);
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            logger.error(e.getMessage(), e);
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
 }
