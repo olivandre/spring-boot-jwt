@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -20,8 +18,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 //import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtTokenUtil implements Serializable {
 
 	/**
@@ -29,8 +29,6 @@ public class JwtTokenUtil implements Serializable {
      */
 	private static final long serialVersionUID = 6927418153515369985L;
 	
-	private static Logger logger = LogManager.getLogger(JwtTokenUtil.class);
-
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
 	@Value("${jwt.secret}")
@@ -77,7 +75,7 @@ public class JwtTokenUtil implements Serializable {
      */
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-		logger.debug("this.secret: {}", this.secret);
+		log.debug("this.secret: {}", this.secret);
 
 		byte[] keyBytes = Decoders.BASE64.decode(secret);
       	Key key = Keys.hmacShaKeyFor(keyBytes);
