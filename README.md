@@ -1,4 +1,4 @@
-# spring-boot-jwt
+<h1 align="left">spring-boot-jwt</h1>
 
 Just start the application with the Spring Boot maven plugin:
 
